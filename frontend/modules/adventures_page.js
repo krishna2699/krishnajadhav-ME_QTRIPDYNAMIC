@@ -5,13 +5,25 @@ import config from "../conf/index.js";
 function getCityFromURL(search) {
   // TODO: MODULE_ADVENTURES
   // 1. Extract the city id from the URL's Query Param and return it
-
+  
+  let cityURL = new URLSearchParams(search);
+   return cityURL.get("city");
+ 
 }
 
 //Implementation of fetch call with a paramterized input based on city
 async function fetchAdventures(city) {
   // TODO: MODULE_ADVENTURES
   // 1. Fetch adventures using the Backend API and return the data
+ try{
+  let fetchedAdventureData = await fetch(config.backendEndpoint+`/adventures/?city=${city}`);
+  let adventureData = await fetchedAdventureData.json();
+  return adventureData;
+ }
+ catch{
+  return null;
+ }
+ 
 
 }
 
@@ -19,7 +31,63 @@ async function fetchAdventures(city) {
 function addAdventureToDOM(adventures) {
   // TODO: MODULE_ADVENTURES
   // 1. Populate the Adventure Cards and insert those details into the DOM
+  for(let i=0;i<adventures.length;i++)
+  {
+    var dataID =document.getElementById("data")
 
+    var div=document.createElement("div");
+    div.setAttribute("class","col-6 col-lg-3 mb-4");
+    dataID.append(div);
+
+    var a=document.createElement("a");
+    a.setAttribute("id",`${adventures[i].id}`);
+    a.href=`detail/?adventure=${adventures[i].id}`;
+    div.append(a);
+
+    var div1=document.createElement("div");
+    div1.setAttribute("class","card activity-card");
+    a.append(div1);
+
+    var img=document.createElement("img");
+    img.src=adventures[i].image;
+    div1.append(img);
+
+    var div2=document.createElement("div");
+    div2.setAttribute("class","card-body col-md-12 mt-2");
+    div1.append(div2);
+
+    var categ=document.createElement("div");
+    categ.setAttribute("class","category-banner");
+    categ.innerText=adventures[i].category;
+    div1.append(categ);
+
+    var div3=document.createElement("div");
+    div3.setAttribute("class","d-flex justify-content-between");
+    div2.append(div3);
+
+    var p1=document.createElement("p");
+    p1.innerText=adventures[i].name;
+    div3.append(p1);
+
+    var p2=document.createElement("p");
+    p2.innerText="₹"+adventures[i].costPerHead;
+    div3.append(p2);
+
+    var div4=document.createElement("div");
+    div4.setAttribute("class","d-flex justify-content-between");
+    div2.append(div4);
+
+    var p3=document.createElement("p");
+    p3.innerText="Duration";
+    div4.append(p3);
+
+    var p4=document.createElement("p");
+    p4.innerText=adventures[i].duration+" Hours";
+    div4.append(p4);
+   
+
+  }
+  
 }
 
 //Implementation of filtering by duration which takes in a list of adventures, the lower bound and upper bound of duration and returns a filtered list of adventures.

@@ -18,7 +18,7 @@ async function fetchCities() {
   
   //fetch data from api
   try{
-  let fetchedCityData= await fetch("http://13.234.103.169:8082/cities");
+  let fetchedCityData= await fetch("http://13.234.83.251:8082/cities");
   let cityData = await fetchedCityData.json();
   return cityData;
   }
