@@ -94,11 +94,26 @@ function addAdventureToDOM(adventures) {
 function filterByDuration(list, low, high) {
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on Duration and return filtered list
+  let filteredList=list.filter(function(e){
+    return (e.duration>=low && e.duration<=high);
+  })
+  console.log(filteredList);
+  return filteredList;
 
 }
 
 //Implementation of filtering by category which takes in a list of adventures, list of categories to be filtered upon and returns a filtered list of adventures.
 function filterByCategory(list, categoryList) {
+
+  
+  let filteredList=[];
+  console.log(list);
+  list.filter(function (e) {
+    if(categoryList.includes(e.category))
+      filteredList.push(e);   
+      });
+
+      return filteredList;
   // TODO: MODULE_FILTERS
   // 1. Filter adventures based on their Category and return filtered list
 
@@ -115,7 +130,25 @@ function filterFunction(list, filters) {
   // TODO: MODULE_FILTERS
   // 1. Handle the 3 cases detailed in the comments above and return the filtered list of adventures
   // 2. Depending on which filters are needed, invoke the filterByDuration() and/or filterByCategory() methods
+  let filteredlist =[]
+  let arr=filters["duration"].split("-")
 
+  // TODO: MODULE_FILTERS
+  // 1. Handle the 3 cases detailed in the comments above and return the filtered list of adventures
+  // 2. Depending on which filters are needed, invoke the filterByDuration() and/or filterByCategory() methods
+  if(filters["category"].length>0&&filters["duration"].length>0){
+
+ filteredlist=filterByCategory(list,filters.category)
+ filteredlist=filterByDuration(filteredlist,parseInt(arr[0]),parseInt(arr[1]))
+  }else if(filters["category"].length>0){
+  filteredlist=filterByCategory(list,filters.category);
+  }else if(filters["duration"].length>0){
+ filteredlist=filterByDuration(list,parseInt(arr[0]),parseInt(arr[1]))
+  }else{
+    return list;
+  }
+  // Place holder for functionality to work in the Stubs
+ return filteredlist;
 
   // Place holder for functionality to work in the Stubs
   return list;
@@ -125,6 +158,7 @@ function filterFunction(list, filters) {
 function saveFiltersToLocalStorage(filters) {
   // TODO: MODULE_FILTERS
   // 1. Store the filters as a String to localStorage
+  window.localStorage.setItem("filters", JSON.stringify(filters));
 
   return true;
 }
@@ -133,8 +167,8 @@ function saveFiltersToLocalStorage(filters) {
 function getFiltersFromLocalStorage() {
   // TODO: MODULE_FILTERS
   // 1. Get the filters from localStorage and return String read as an object
-
-
+  return JSON.parse(window.localStorage.getItem('filters'));
+  
   // Place holder for functionality to work in the Stubs
   return null;
 }
@@ -146,6 +180,23 @@ function getFiltersFromLocalStorage() {
 function generateFilterPillsAndUpdateDOM(filters) {
   // TODO: MODULE_FILTERS
   // 1. Use the filters given as input, update the Duration Filter value and Generate Category Pills
+
+  let categoryList=filters["category"];
+  let li=[];
+ for(let i=0;i<categoryList.length;i++)
+ {
+  // console.log(categoryList[i]);
+   li.push(categoryList[i]);
+ }
+ console.log(li);
+ for(let i=0;i<li.length;i++)
+ {
+   console.log(li[i]);
+   var div=document.createElement("div");
+   div.setAttribute("class","category-filter");
+   div.innerText=li[i];
+   document.getElementById("category-list").append(div);
+ }
 
 }
 export {
