@@ -18,7 +18,7 @@ async function fetchCities() {
   
   //fetch data from api
   try{
-  let fetchedCityData= await fetch("http://65.0.164.31:8082/cities");
+  let fetchedCityData= await fetch(config.backendEndpoint+"/cities");
   let cityData = await fetchedCityData.json();
   return cityData;
   }
